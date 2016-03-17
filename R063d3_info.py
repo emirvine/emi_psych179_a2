@@ -1,8 +1,6 @@
 from shortcut_general import *
 import os
 
-# Load the data
-
 # os.chdir('C:\Users\Emily\Desktop\R063-2015-03-22_recording')
 csc = load_csc('C:\Users\Emily\Desktop\R063-2015-03-22_recording\emi_inputs_csc.mat')
 pos = load_videotrack('C:\Users\Emily\Desktop\R063-2015-03-22_recording\emi_inputs_vt.mat')

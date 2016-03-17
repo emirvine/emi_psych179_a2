@@ -72,7 +72,6 @@ def load_spikes(matfile):
     return spikes
 
 
-# Some useful functions
 def find_nearest_idx(array, val):
     return (np.abs(array-val)).argmin()
 
