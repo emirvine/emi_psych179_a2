@@ -32,13 +32,15 @@ cfg.type = 'fdesign';
 cfg.f = [140, 250];
 csc_filtered = FilterLFP(cfg, csc);
 
-envelope = abs(csc_filtered.data);
+filtering = abs(csc_filtered.data);
 
 % Convolve with a Gaussian kernel
-kernel = gausskernel(60, 20);
-envelope = conv(envelope, kernel, 'same');
+gauss_x = 60;
+gauss_sigma = 20;
+kernel = gausskernel(gauss_x, gauss_sigma);
+filtering = conv(filtering, kernel, 'same');
 
-swr = tsd(csc.tvec, envelope);
+swr = tsd(csc.tvec, filtering);
 
 % Extract times associated with swr events
 cfg = [];
@@ -141,6 +143,12 @@ for side = 1:length(tracks)
 end
 
 
+
+%% *Optional* Test code with toys that show A) No evidence of co-activation beyond chance
+%  and B) No difference between the track segments.
+% ----------------------- not yet implemented -------------------------
+
+
 %% Co-activation probabilities
 % We are currently using 10000 shuffles. Tests with more shuffles yielded 
 % similar results. 
@@ -169,14 +177,15 @@ for prob = length(p_list):-1:1
     for side = 1:length(tracks)
         bar(location(side), p_data(prob, side), 0.6, 'FaceColor', colors(side,:), 'Edgecolor', 'none');
         hold on;
-        
         title(titles{prob});
         ylabel(ylabels{prob});
         xlabel('Field location');
+        % todo: Include how many neurons and how many pairs were analyzed.
     end
 end
 
 set(fig, 'XLim', [location(1)-1, location(3)+1], 'XTick', location, 'XTickLabel', xticklabel, 'FontSize', 12);
 set(fig, 'PlotBoxAspectRatio', [1, 1, 1]);
+% todo: Stats.
 maximize
 savefig('C:\Users\Emily\Desktop\cooccurrance_r063d3_pB.png')
